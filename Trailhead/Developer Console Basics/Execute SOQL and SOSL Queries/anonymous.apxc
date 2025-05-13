@@ -1,0 +1,10 @@
+String str = 'Mission Control';
+List<List<sObject>> cList = [FIND :str IN ALL FIELDS RETURNING Contact(LastName, FirstName)];
+for(List<sObject> sList : cList){
+    if(sList[0] instanceof Contact && cList.size() > 0){
+        List<Contact> con = (List<Contact>)sList;
+        for(Contact c : con){
+            System.debug(c.LastName + ' ' + c.FirstName);
+        }
+    }
+}
