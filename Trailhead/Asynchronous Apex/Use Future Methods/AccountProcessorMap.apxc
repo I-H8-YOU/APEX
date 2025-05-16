@@ -1,0 +1,19 @@
+public with sharing class AccountProcessorMap {
+	@future
+    public static void countContactsMap(List<Id> idList){
+        Map<Id, Integer> countMap = new Map<Id, Integer>();
+        for(Contact c : [select AccountId from Contact where AccountId in :idList]){
+            Id accId = c.AccountId;
+            if(countMap.containsKey(accId)){
+                countMap.put(accId, countMap.get(accId) + 1);
+            }else{
+                countMap.put(accId, 1);
+            }
+        }
+        List<Account> accList = new List<Account>();
+        for(Id accId : countMap.keySet()){
+            accList.add(new Account(Id = accId, Number_Of_Contacts__c = countMap.get(accId)));
+        }
+        update accList;
+    }
+}
